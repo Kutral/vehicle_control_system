@@ -1,18 +1,22 @@
-# vehicle_control_system
-This project is an automated testing framework for a theoretical vehicle control system. The system is simulated in Python, and it includes functionalities like acceleration, braking, and steering. Here's an overview:
+# Vehicle Control System with Web Interface and Automated Testing
 
-1. **`VehicleControlSystem` Class**:
-   - This class represents a simplified model of a vehicle control system. It has attributes for speed, steering angle, and brake status. Methods include `get_speed` to retrieve the current speed, `accelerate` to simulate acceleration, `brake` to engage the brake, and `steer` to set the steering angle.
+This project implements a **Vehicle Control System** with a web-based interface, allowing users to control a simulated vehicle's speed and steering angle. The system is built using Python and Flask, providing a simple and intuitive way to interact with the vehicle controls. Additionally, the project includes a robust testing framework using **Selenium** and **Pytest** to ensure the reliability and correctness of the system through automated browser interactions.
 
-2. **`VehicleControlTester` Class**:
-   - This class is responsible for testing the functionalities of the vehicle control system. It has three test methods: `test_acceleration`, `test_braking`, and `test_steering`. Each method simulates a scenario and checks if the expected outcome matches the actual outcome.
+## Key Features
+- **Web Interface**: Control the vehicle's speed and steering angle via a user-friendly web page.
+- **Automated Testing**: Comprehensive tests using Selenium for browser automation and Pytest for test structuring and execution.
+- **Flask Integration**: A lightweight web server to handle user inputs and display vehicle status.
+- **Easy to Use and Extend**: The project is designed to be simple, making it ideal for learning and experimentation.
 
-3. **Test Cases**:
-   - `test_acceleration` checks if the vehicle accelerates as expected.
-   - `test_braking` checks if the vehicle comes to a complete stop when the brake is applied after acceleration.
-   - `test_steering` checks if the steering angle is set correctly.
+## Project Overview
+The **Vehicle Control System** simulates basic vehicle operations such as acceleration, braking, and steering. Users can interact with these controls through a web interface, which updates in real-time to reflect the vehicle's current speed and steering angle.
 
-4. **Main Execution Block**:
-   - In this block, an instance of the `VehicleControlSystem` is created. Then, an instance of `VehicleControlTester` is initialized with this system. Finally, the tests are executed using the `run_tests` method.
+The testing framework leverages **Selenium** to automate interactions with the web interface, simulating user actions like clicking buttons and entering values. **Pytest** is used to organize and run these tests, ensuring that the system behaves as expected under various conditions.
 
-Please note that this is a simplified example for demonstration purposes. In real-world scenarios, the `VehicleControlSystem` class would interact with actual hardware or software components of a vehicle, and the test cases would be much more complex and cover a wider range of scenarios. Additionally, specialized testing frameworks and tools may be used for more advanced and comprehensive testing.
+This project serves as an excellent example of how to integrate web development with automated testing, making it a valuable resource for developers and testers alike.
+
+## Technologies Used
+- **Python**: Core programming language.
+- **Flask**: Web framework for building the user interface.
+- **Selenium**: Tool for automating browser interactions.
+- **Pytest**: Framework for writing and running tests.
