@@ -89,4 +89,4 @@ mvn test
 *   **View**: `dashboard.html` renders the UI server-side.
 
 ---
-*Created by Jules*
+*Created by Kutral Eswar*
