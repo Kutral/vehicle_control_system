@@ -1,22 +1,55 @@
-# Vehicle Control System with Web Interface and Automated Testing
+# Vehicle Control System (Java Spring Boot Edition)
 
-This project implements a **Vehicle Control System** with a web-based interface, allowing users to control a simulated vehicle's speed and steering angle. The system is built using Python and Flask, providing a simple and intuitive way to interact with the vehicle controls. Additionally, the project includes a robust testing framework using **Selenium** and **Pytest** to ensure the reliability and correctness of the system through automated browser interactions.
+This is a modernized, "surprising" upgrade of the original Vehicle Control System. It has been completely rewritten in Java using **Spring Boot 3** and enhanced with a modern UI and robust architecture.
 
-## Key Features
-- **Web Interface**: Control the vehicle's speed and steering angle via a user-friendly web page.
-- **Automated Testing**: Comprehensive tests using Selenium for browser automation and Pytest for test structuring and execution.
-- **Flask Integration**: A lightweight web server to handle user inputs and display vehicle status.
-- **Easy to Use and Extend**: The project is designed to be simple, making it ideal for learning and experimentation.
+## Improvements & New Features
 
-## Project Overview
-The **Vehicle Control System** simulates basic vehicle operations such as acceleration, braking, and steering. Users can interact with these controls through a web interface, which updates in real-time to reflect the vehicle's current speed and steering angle.
+*   **Technology Stack**: Migrated from Python/Flask to **Java 21 / Spring Boot 3**.
+*   **Architecture**: Clean separation of concerns (Model-View-Controller).
+*   **Enhanced Physics**:
+    *   **Engine State**: You must start the engine before driving!
+    *   **Gears**: Added a gear system (1-5, Neutral, Reverse).
+    *   **Constraints**: Validated speed limits and steering angles.
+*   **Modern UI**: Replaced raw HTML with **Thymeleaf + Bootstrap 5** for a responsive, dashboard-style interface.
+*   **API Support**: Added a REST API (`/api/vehicle` and `/api/control`) for programmatic control.
+*   **Testing**: Comprehensive test suite including Unit Tests, Integration Tests (MockMvc), and E2E Selenium Tests (Java).
 
-The testing framework leverages **Selenium** to automate interactions with the web interface, simulating user actions like clicking buttons and entering values. **Pytest** is used to organize and run these tests, ensuring that the system behaves as expected under various conditions.
+## How to Run
 
-This project serves as an excellent example of how to integrate web development with automated testing, making it a valuable resource for developers and testers alike.
+### Prerequisites
+*   Java 21+
+*   Maven 3.x
 
-## Technologies Used
-- **Python**: Core programming language.
-- **Flask**: Web framework for building the user interface.
-- **Selenium**: Tool for automating browser interactions.
-- **Pytest**: Framework for writing and running tests.
+### Build and Run
+```bash
+mvn spring-boot:run
+```
+
+Access the dashboard at: **http://localhost:8080**
+
+### Running Tests
+```bash
+mvn test
+```
+*Note: The Selenium E2E test requires a local Chrome installation and is disabled by default for CI environments without a display.*
+
+## API Usage
+
+You can control the vehicle programmatically!
+
+**Get Status:**
+```bash
+curl http://localhost:8080/api/vehicle
+```
+
+**Control Vehicle:**
+```bash
+# Start Engine
+curl -X POST "http://localhost:8080/api/control?action=toggle_engine"
+
+# Accelerate
+curl -X POST "http://localhost:8080/api/control?action=accelerate&value=20"
+
+# Steer
+curl -X POST "http://localhost:8080/api/control?action=steer&value=30"
+```
