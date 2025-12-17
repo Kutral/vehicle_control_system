@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vehicle Control System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dashboard-card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .status-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mt-5 mb-4">Vehicle Control Dashboard</h1>
+
+            <!-- Status Panel -->
+            <div class="card dashboard-card bg-white">
+                <div class="card-body">
+                    <h5 class="card-title">Vehicle Status</h5>
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <p class="text-muted">Speed</p>
+                            <div class="status-value text-primary" id="speed">
+                                <span th:text="${vehicle.speed}">0</span> <small>km/h</small>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p class="text-muted">Steering</p>
+                            <div class="status-value text-info" id="steering_angle">
+                                <span th:text="${vehicle.steeringAngle}">0</span>&deg;
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p class="text-muted">Gear</p>
+                            <div class="status-value text-dark">
+                                <span th:text="${vehicle.gear}">1</span>
+                            </div>
+                        </div>
+                         <div class="col-3">
+                            <p class="text-muted">Engine</p>
+                            <div class="status-value" th:classappend="${vehicle.engineOn} ? 'text-success' : 'text-danger'">
+                                <span th:text="${vehicle.engineOn ? 'ON' : 'OFF'}">OFF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row text-center mt-4">
+                        <div class="col-6">
+                            <p class="text-muted mb-1">Fuel Level</p>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar" role="progressbar"
+                                     th:style="'width: ' + ${vehicle.fuelLevel} + '%;'"
+                                     th:classappend="${vehicle.fuelLevel < 20} ? 'bg-danger' : 'bg-success'"
+                                     th:text="${#numbers.formatDecimal(vehicle.fuelLevel, 1, 1)} + '%'">
+                                    100%
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-6">
+                            <p class="text-muted mb-0">Odometer</p>
+                            <div class="status-value text-secondary" style="font-size: 1.5em;">
+                                <span th:text="${#numbers.formatDecimal(vehicle.odometer, 1, 1)}">0.0</span> <small>km</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="card dashboard-card bg-white">
+                <div class="card-body">
+                    <h5 class="card-title">Controls</h5>
+
+                    <div class="d-grid gap-2 mb-3">
+                        <form action="/control" method="post" class="d-grid">
+                            <input type="hidden" name="action" value="toggle_engine">
+                            <button type="submit" class="btn btn-lg" th:classappend="${vehicle.engineOn} ? 'btn-outline-danger' : 'btn-outline-success'">
+                                <span th:text="${vehicle.engineOn ? 'Stop Engine' : 'Start Engine'}">Start Engine</span>
+                            </button>
+                        </form>
+                    </div>
+
+                     <div class="d-grid gap-2 mb-3">
+                         <form action="/control" method="post" class="d-grid">
+                             <input type="hidden" name="action" value="refuel">
+                            <button type="submit" class="btn btn-warning text-dark" name="refuel" th:disabled="${vehicle.fuelLevel >= 100}">Refuel Vehicle</button>
+                        </form>
+                    </div>
+
+                    <div class="row g-2 align-items-center mb-3">
+                        <div class="col-auto">
+                            <label class="col-form-label">Acceleration</label>
+                        </div>
+                        <div class="col">
+                             <form action="/control" method="post" class="d-flex">
+                                <input type="hidden" name="action" value="accelerate">
+                                <input type="number" name="value" class="form-control me-2" placeholder="Amount" value="10" min="1">
+                                <button type="submit" class="btn btn-primary" name="accelerate" th:disabled="${!vehicle.engineOn}">Accelerate</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                         <form action="/control" method="post" class="d-grid">
+                             <input type="hidden" name="action" value="brake">
+                            <button type="submit" class="btn btn-danger btn-lg" name="brake">Brake</button>
+                        </form>
+                    </div>
+
+                    <div class="row g-2 align-items-center mb-3">
+                        <div class="col-auto">
+                            <label class="col-form-label">Steering</label>
+                        </div>
+                        <div class="col">
+                             <form action="/control" method="post" class="d-flex">
+                                <input type="hidden" name="action" value="steer">
+                                <input type="number" name="value" class="form-control me-2" placeholder="Angle (-45 to 45)" value="0">
+                                <button type="submit" class="btn btn-info text-white" name="steer">Steer</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <form action="/control" method="post" class="d-grid">
+                            <input type="hidden" name="action" value="reset">
+                            <button type="submit" class="btn btn-secondary" name="reset">Reset System</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

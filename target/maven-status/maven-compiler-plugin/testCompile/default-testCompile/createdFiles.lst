@@ -1,0 +1,3 @@
+com/example/vehicle/SeleniumE2ETest.class
+com/example/vehicle/service/VehicleServiceTest.class
+com/example/vehicle/controller/VehicleControllerIntegrationTest.class
