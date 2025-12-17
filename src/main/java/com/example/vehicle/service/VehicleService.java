@@ -26,9 +26,44 @@ public class VehicleService {
         if (vehicle.isBrakeEngaged()) {
              throw new IllegalStateException("Cannot accelerate: Brake is engaged.");
         }
+        if (vehicle.getFuelLevel() <= 0) {
+            vehicle.setEngineOn(false);
+            vehicle.setSpeed(0);
+            throw new IllegalStateException("Cannot accelerate: Out of fuel.");
+        }
 
         int potentialSpeed = vehicle.getSpeed() + amount;
         vehicle.setSpeed(Math.min(potentialSpeed, Vehicle.MAX_SPEED));
+
+        // Simulate fuel consumption and distance (simplified)
+        consumeFuelAndTravel();
+    }
+
+    public void refuel() {
+        vehicle.setFuelLevel(Vehicle.MAX_FUEL);
+    }
+
+    private void consumeFuelAndTravel() {
+        // Simple simulation: Higher speed = more fuel consumed
+        // distance = speed * time (assuming 1 unit of time per action for simplicity)
+        double speed = vehicle.getSpeed();
+        if (speed > 0) {
+            double consumption = (speed * 0.05); // arbitrary unit
+            double currentFuel = vehicle.getFuelLevel();
+            double newFuel = Math.max(0, currentFuel - consumption);
+            vehicle.setFuelLevel(newFuel);
+
+            if (newFuel == 0) {
+                vehicle.setEngineOn(false);
+                vehicle.setSpeed(0);
+            }
+
+            // Update odometer (assuming 1 action = 1 minute for simulation sake, speed in km/h)
+            // distance = speed (km/h) * (1/60) h
+            double distance = speed / 60.0;
+            vehicle.setOdometer(vehicle.getOdometer() + distance);
+            vehicle.setTripDistance(vehicle.getTripDistance() + distance);
+        }
     }
 
     public void brake() {
